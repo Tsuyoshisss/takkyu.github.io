@@ -1,123 +1,90 @@
-<!DOCTYPE html>  
-<html lang="ja">  
-<head>  
-  <meta charset="UTF-8">  
-  <title>動体視力テスト</title>  
-  <style>  
-    body {   
-      text-align: center;   
-      margin-top: 50px;   
-      background-color: #fef2cc;   
-      font-family: sans-serif;   
-    }  
-    img {   
-      width: 1200px;   
-      height: auto;   
-      border: 5px solid #f59e42;   
-      margin-top: 20px;   
-    }  
-    label, select, button {   
-      font-size: 1.1em;   
-      margin: 10px;   
-    }  
-    button {   
-      padding: 8px 16px;   
-      cursor: pointer;   
-    }  
-  </style>  
-</head>  
-<body>  
-  <h1>動体視力テスト</h1>  
-  
-  <label for="speedSelect">表示スピード（ミリ秒）:</label>  
-  <select id="speedSelect">  
-    <option value="400">超高速</option>  
-    <option value="500">高速</option>  
-    <option value="600" selected>普通</option>  
-    <option value="700">遅め</option>  
-  </select>  
-  
-  <label for="countSelect">ランダム画像回数:</label>  
-  <select id="countSelect">  
-    <option value="30">30回</option>  
-    <option value="50" selected>50回</option>  
-    <option value="70">70回</option>  
-    <option value="90">90回</option>  
-    <option value="100">100回</option>  
-  </select>  
-  <br>  
-  
-  <button onclick="startSlot()">スタート！</button>  
-  <button onclick="stopSlot()">途中終了</button>  
-  <br>  
-  <img id="slotImage" src="img/6.png" alt="スタート">  
-  
-  <script>  
-    // グローバルにIntervalのIDを保持  
-    let slotInterval = null;  
-  
-    const images     = ["img/1.png", "img/2.png", "img/3.png", "img/4.png", "img/5.png"];  
-    const fixedImage = "img/6.png";  
-  
-    function startSlot() {  
-      // すでに動いていたら一度クリア  
-      if (slotInterval !== null) {  
-        clearInterval(slotInterval);  
-      }  
-  
-      // フルスクリーン要求  
-      const docEl = document.documentElement;  
-      if (docEl.requestFullscreen) {  
-        docEl.requestFullscreen();  
-      } else if (docEl.webkitRequestFullscreen) {  
-        docEl.webkitRequestFullscreen();  
-      } else if (docEl.msRequestFullscreen) {  
-        docEl.msRequestFullscreen();  
-      }  
-  
-      const speed      = parseInt(document.getElementById("speedSelect").value, 10);  
-      const countLimit = parseInt(document.getElementById("countSelect").value, 10);  
-      let randomCount  = 0;      // ランダム画像を出した回数  
-      let showFixed    = false;  // false → 次はランダム, true → 次は固定  
-  
-      const slotImg = document.getElementById("slotImage");  
-  
-      slotInterval = setInterval(() => {  
-        if (!showFixed) {  
-          // ランダム画像  
-          const idx = Math.floor(Math.random() * images.length);  
-          slotImg.src = images[idx];  
-  
-          randomCount++;  
-          // ランダム画像が指定回数に達したら停止  
-          if (randomCount >= countLimit) {  
-            stopSlot();  
-            return;  
-          }  
-        } else {  
-          // 固定画像  
-          slotImg.src = fixedImage;  
-        }  
-        // 次回は固定⇔ランダムを交互に  
-        showFixed = !showFixed;  
-      }, speed);  
-    }  
-  
-    function stopSlot() {  
-      // Interval が動いていればクリア  
-      if (slotInterval !== null) {  
-        clearInterval(slotInterval);  
-        slotInterval = null;  
-      }  
-      // 全画面解除  
-      if (document.exitFullscreen) {  
-        document.exitFullscreen();  
-      } else if (document.webkitExitFullscreen) {  
-        document.webkitExitFullscreen();  
-      } else if (document.msExitFullscreen) {  
-        document.msExitFullscreen();  
-      }  
-    }  
-  </script>  
-</body>  
+<!DOCTYPE html>    
+<html lang="ja">    
+<head>    
+  <meta charset="UTF-8">    
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">    
+  <title>動体視力テスト</title>    
+  <style>    
+    body {    
+      margin: 0; padding: 0;    
+      text-align: center;    
+      background-color: #fef2cc;    
+      font-family: sans-serif;    
+    }    
+    img {    
+      max-width: 100%;    
+      height: auto;    
+      border: 5px solid #f59e42;    
+      margin-top: 20px;    
+    }    
+    label, select, button {    
+      font-size: 1em;    
+      margin: 8px;    
+    }    
+    button {    
+      padding: 8px 16px;    
+      cursor: pointer;    
+    }    
+  </style>    
+</head>    
+<body>    
+  <h1>動体視力テスト</h1>    
+    
+  <label for="speedSelect">表示スピード（ミリ秒）:</label>    
+  <select id="speedSelect">    
+    <option value="500">超高速</option>    
+    <option value="600">高速</option>    
+    <option value="700" selected>普通</option>    
+    <option value="800">遅め</option>    
+  </select>    
+    
+  <label for="countSelect">ランダム画像回数:</label>    
+  <select id="countSelect">    
+    <option value="30">30回</option>    
+    <option value="50" selected>50回</option>    
+    <option value="70">70回</option>    
+    <option value="90">90回</option>    
+    <option value="100">100回</option>    
+  </select>    
+  <br>    
+    
+  <button onclick="startSlot()">スタート！</button>    
+  <button onclick="stopSlot()">途中終了</button>    
+  <br>    
+  <img id="slotImage" src="img/6.png" alt="スタート">    
+    
+  <script>    
+    let slotInterval = null;    
+    const images     = ["img/1.png","img/2.png","img/3.png","img/4.png","img/5.png"];    
+    const fixedImage = "img/6.png";    
+    
+    function startSlot() {    
+      if (slotInterval) clearInterval(slotInterval);    
+      // フルスクリーン無効化のため以下2行削除  
+      // document.documentElement.requestFullscreen?.();    
+      const speed = +document.getElementById("speedSelect").value;    
+      const limit = +document.getElementById("countSelect").value;    
+      let rndCnt = 0, showFix = false;    
+      const slotImg = document.getElementById("slotImage");    
+    
+      slotInterval = setInterval(()=>{    
+        if (!showFix) {    
+          slotImg.src = images[Math.floor(Math.random()*images.length)];    
+          rndCnt++;    
+          if (rndCnt >= limit) return stopSlot();    
+        } else {    
+          slotImg.src = fixedImage;    
+        }    
+        showFix = !showFix;    
+      }, speed);    
+    }    
+    
+    function stopSlot() {    
+      clearInterval(slotInterval);    
+      slotInterval = null;    
+      // フルスクリーン無効化のため以下1行削除  
+      // document.exitFullscreen?.();    
+    }    
+  </script>    
+</body>    
 </html>  
